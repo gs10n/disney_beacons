@@ -1,4 +1,4 @@
-#include "ble_beacon_app.h"
+#include "disney_beacons_app.h"
 
 #include <extra_beacon.h>
 #include <furi_hal_version.h>
@@ -7,25 +7,25 @@
 
 #define TAG "BleBeaconApp"
 
-static bool ble_beacon_app_custom_event_callback(void* context, uint32_t event) {
+static bool disney_beacons_app_custom_event_callback(void* context, uint32_t event) {
     furi_assert(context);
     BleBeaconApp* app = context;
     return scene_manager_handle_custom_event(app->scene_manager, event);
 }
 
-static bool ble_beacon_app_back_event_callback(void* context) {
+static bool disney_beacons_app_back_event_callback(void* context) {
     furi_assert(context);
     BleBeaconApp* app = context;
     return scene_manager_handle_back_event(app->scene_manager);
 }
 
-static void ble_beacon_app_tick_event_callback(void* context) {
+static void disney_beacons_app_tick_event_callback(void* context) {
     furi_assert(context);
     BleBeaconApp* app = context;
     scene_manager_handle_tick_event(app->scene_manager);
 }
 
-static void ble_beacon_app_restore_beacon_state(BleBeaconApp* app) {
+static void disney_beacons_app_restore_beacon_state(BleBeaconApp* app) {
     // Restore beacon data from service
     GapExtraBeaconConfig* local_config = &app->beacon_config;
     const GapExtraBeaconConfig* config = furi_hal_bt_extra_beacon_get_config();
@@ -57,23 +57,23 @@ static void ble_beacon_app_restore_beacon_state(BleBeaconApp* app) {
     app->beacon_data_len = furi_hal_bt_extra_beacon_get_data(app->beacon_data);
 }
 
-static BleBeaconApp* ble_beacon_app_alloc(void) {
+static BleBeaconApp* disney_beacons_app_alloc(void) {
     BleBeaconApp* app = malloc(sizeof(BleBeaconApp));
 
     app->gui = furi_record_open(RECORD_GUI);
 
-    app->scene_manager = scene_manager_alloc(&ble_beacon_app_scene_handlers, app);
+    app->scene_manager = scene_manager_alloc(&disney_beacons_app_scene_handlers, app);
     app->view_dispatcher = view_dispatcher_alloc();
 
     app->status_string = furi_string_alloc();
 
     view_dispatcher_set_event_callback_context(app->view_dispatcher, app);
     view_dispatcher_set_custom_event_callback(
-        app->view_dispatcher, ble_beacon_app_custom_event_callback);
+        app->view_dispatcher, disney_beacons_app_custom_event_callback);
     view_dispatcher_set_navigation_event_callback(
-        app->view_dispatcher, ble_beacon_app_back_event_callback);
+        app->view_dispatcher, disney_beacons_app_back_event_callback);
     view_dispatcher_set_tick_event_callback(
-        app->view_dispatcher, ble_beacon_app_tick_event_callback, 100);
+        app->view_dispatcher, disney_beacons_app_tick_event_callback, 100);
     view_dispatcher_attach_to_gui(app->view_dispatcher, app->gui, ViewDispatcherTypeFullscreen);
 
     app->submenu = submenu_alloc();
@@ -88,12 +88,12 @@ static BleBeaconApp* ble_beacon_app_alloc(void) {
     view_dispatcher_add_view(
         app->view_dispatcher, BleBeaconAppViewByteInput, byte_input_get_view(app->byte_input));
 
-    ble_beacon_app_restore_beacon_state(app);
+    disney_beacons_app_restore_beacon_state(app);
 
     return app;
 }
 
-static void ble_beacon_app_free(BleBeaconApp* app) {
+static void disney_beacons_app_free(BleBeaconApp* app) {
     view_dispatcher_remove_view(app->view_dispatcher, BleBeaconAppViewByteInput);
     view_dispatcher_remove_view(app->view_dispatcher, BleBeaconAppViewSubmenu);
     view_dispatcher_remove_view(app->view_dispatcher, BleBeaconAppViewDialog);
@@ -114,20 +114,20 @@ static void ble_beacon_app_free(BleBeaconApp* app) {
     free(app);
 }
 
-int32_t ble_beacon_app(void* args) {
+int32_t disney_beacons_app(void* args) {
     UNUSED(args);
 
-    BleBeaconApp* app = ble_beacon_app_alloc();
+    BleBeaconApp* app = disney_beacons_app_alloc();
 
     scene_manager_next_scene(app->scene_manager, BleBeaconAppSceneRunBeacon);
 
     view_dispatcher_run(app->view_dispatcher);
 
-    ble_beacon_app_free(app);
+    disney_beacons_app_free(app);
     return 0;
 }
 
-void ble_beacon_app_update_state(BleBeaconApp* app) {
+void disney_beacons_app_update_state(BleBeaconApp* app) {
     furi_hal_bt_extra_beacon_stop();
 
     furi_check(furi_hal_bt_extra_beacon_set_config(&app->beacon_config));

@@ -1,6 +1,6 @@
 /**
- * @file ble_beacon_app.h
- * @brief BLE beacon example.
+ * @file disney_beacons_app.h
+ * @brief DIS beacons.
  */
 #pragma once
 
@@ -51,4 +51,4 @@ typedef enum {
     BleBeaconAppCustomEventDataEditResult = 100,
 } BleBeaconAppCustomEvent;
 
-void ble_beacon_app_update_state(BleBeaconApp* app);
+void disney_beacons_app_update_state(BleBeaconApp* app);
