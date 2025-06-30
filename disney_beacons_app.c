@@ -5,27 +5,27 @@
 
 #include <string.h>
 
-#define TAG "BleBeaconApp"
+#define TAG "DisneyBeaconsApp"
 
 static bool disney_beacons_app_custom_event_callback(void* context, uint32_t event) {
     furi_assert(context);
-    BleBeaconApp* app = context;
+    DisneyBeaconsApp* app = context;
     return scene_manager_handle_custom_event(app->scene_manager, event);
 }
 
 static bool disney_beacons_app_back_event_callback(void* context) {
     furi_assert(context);
-    BleBeaconApp* app = context;
+    DisneyBeaconsApp* app = context;
     return scene_manager_handle_back_event(app->scene_manager);
 }
 
 static void disney_beacons_app_tick_event_callback(void* context) {
     furi_assert(context);
-    BleBeaconApp* app = context;
+    DisneyBeaconsApp* app = context;
     scene_manager_handle_tick_event(app->scene_manager);
 }
 
-static void disney_beacons_app_restore_beacon_state(BleBeaconApp* app) {
+static void disney_beacons_app_restore_beacon_state(DisneyBeaconsApp* app) {
     // Restore beacon data from service
     GapExtraBeaconConfig* local_config = &app->beacon_config;
     const GapExtraBeaconConfig* config = furi_hal_bt_extra_beacon_get_config();
@@ -57,8 +57,8 @@ static void disney_beacons_app_restore_beacon_state(BleBeaconApp* app) {
     app->beacon_data_len = furi_hal_bt_extra_beacon_get_data(app->beacon_data);
 }
 
-static BleBeaconApp* disney_beacons_app_alloc(void) {
-    BleBeaconApp* app = malloc(sizeof(BleBeaconApp));
+static DisneyBeaconsApp* disney_beacons_app_alloc(void) {
+    DisneyBeaconsApp* app = malloc(sizeof(DisneyBeaconsApp));
 
     app->gui = furi_record_open(RECORD_GUI);
 
@@ -78,29 +78,35 @@ static BleBeaconApp* disney_beacons_app_alloc(void) {
 
     app->submenu = submenu_alloc();
     view_dispatcher_add_view(
-        app->view_dispatcher, BleBeaconAppViewSubmenu, submenu_get_view(app->submenu));
+        app->view_dispatcher, DisneyBeaconsAppViewSubmenu, submenu_get_view(app->submenu));
 
     app->dialog_ex = dialog_ex_alloc();
     view_dispatcher_add_view(
-        app->view_dispatcher, BleBeaconAppViewDialog, dialog_ex_get_view(app->dialog_ex));
+        app->view_dispatcher, DisneyBeaconsAppViewDialog, dialog_ex_get_view(app->dialog_ex));
 
     app->byte_input = byte_input_alloc();
     view_dispatcher_add_view(
-        app->view_dispatcher, BleBeaconAppViewByteInput, byte_input_get_view(app->byte_input));
+        app->view_dispatcher, DisneyBeaconsAppViewByteInput, byte_input_get_view(app->byte_input));
+
+    app->ears = submenu_alloc();
+    view_dispatcher_add_view(
+        app->view_dispatcher, DisneyBeaconsAppViewEars, submenu_get_view(app->ears));
 
     disney_beacons_app_restore_beacon_state(app);
 
     return app;
 }
 
-static void disney_beacons_app_free(BleBeaconApp* app) {
-    view_dispatcher_remove_view(app->view_dispatcher, BleBeaconAppViewByteInput);
-    view_dispatcher_remove_view(app->view_dispatcher, BleBeaconAppViewSubmenu);
-    view_dispatcher_remove_view(app->view_dispatcher, BleBeaconAppViewDialog);
+static void disney_beacons_app_free(DisneyBeaconsApp* app) {
+    view_dispatcher_remove_view(app->view_dispatcher, DisneyBeaconsAppViewByteInput);
+    view_dispatcher_remove_view(app->view_dispatcher, DisneyBeaconsAppViewSubmenu);
+    view_dispatcher_remove_view(app->view_dispatcher, DisneyBeaconsAppViewDialog);
+    view_dispatcher_remove_view(app->view_dispatcher, DisneyBeaconsAppViewEars);
 
     free(app->byte_input);
     free(app->submenu);
     free(app->dialog_ex);
+    free(app->ears);
 
     free(app->scene_manager);
     free(app->view_dispatcher);
@@ -117,9 +123,9 @@ static void disney_beacons_app_free(BleBeaconApp* app) {
 int32_t disney_beacons_app(void* args) {
     UNUSED(args);
 
-    BleBeaconApp* app = disney_beacons_app_alloc();
+    DisneyBeaconsApp* app = disney_beacons_app_alloc();
 
-    scene_manager_next_scene(app->scene_manager, BleBeaconAppSceneRunBeacon);
+    scene_manager_next_scene(app->scene_manager, DisneyBeaconsAppSceneRunBeacon);
 
     view_dispatcher_run(app->view_dispatcher);
 
@@ -127,7 +133,7 @@ int32_t disney_beacons_app(void* args) {
     return 0;
 }
 
-void disney_beacons_app_update_state(BleBeaconApp* app) {
+void disney_beacons_app_update_state(DisneyBeaconsApp* app) {
     furi_hal_bt_extra_beacon_stop();
 
     furi_check(furi_hal_bt_extra_beacon_set_config(&app->beacon_config));

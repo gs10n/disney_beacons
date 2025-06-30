@@ -26,5 +26,5 @@ const SceneManagerHandlers disney_beacons_app_scene_handlers = {
     .on_enter_handlers = disney_beacons_app_on_enter_handlers,
     .on_event_handlers = disney_beacons_app_on_event_handlers,
     .on_exit_handlers = disney_beacons_app_on_exit_handlers,
-    .scene_num = BleBeaconAppSceneNum,
+    .scene_num = DisneyBeaconsAppSceneNum,
 };

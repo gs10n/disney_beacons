@@ -3,12 +3,12 @@
 
 static void
     disney_beacons_app_scene_run_beacon_confirm_dialog_callback(DialogExResult result, void* context) {
-    BleBeaconApp* ble_beacon = context;
+    DisneyBeaconsApp* ble_beacon = context;
 
     view_dispatcher_send_custom_event(ble_beacon->view_dispatcher, result);
 }
 
-static void update_status_text(BleBeaconApp* ble_beacon) {
+static void update_status_text(DisneyBeaconsApp* ble_beacon) {
     DialogEx* dialog_ex = ble_beacon->dialog_ex;
 
     dialog_ex_set_header(dialog_ex, "DIS Beacons", 64, 0, AlignCenter, AlignTop);
@@ -48,20 +48,20 @@ static void update_status_text(BleBeaconApp* ble_beacon) {
 }
 
 void disney_beacons_app_scene_run_beacon_on_enter(void* context) {
-    BleBeaconApp* ble_beacon = context;
+    DisneyBeaconsApp* ble_beacon = context;
 
     update_status_text(ble_beacon);
 
-    view_dispatcher_switch_to_view(ble_beacon->view_dispatcher, BleBeaconAppViewDialog);
+    view_dispatcher_switch_to_view(ble_beacon->view_dispatcher, DisneyBeaconsAppViewDialog);
 }
 
 bool disney_beacons_app_scene_run_beacon_on_event(void* context, SceneManagerEvent event) {
-    BleBeaconApp* ble_beacon = context;
+    DisneyBeaconsApp* ble_beacon = context;
     SceneManager* scene_manager = ble_beacon->scene_manager;
 
     if(event.type == SceneManagerEventTypeCustom) {
         if(event.event == DialogExResultLeft) {
-            scene_manager_next_scene(scene_manager, BleBeaconAppSceneMenu);
+            scene_manager_next_scene(scene_manager, DisneyBeaconsAppSceneMenu);
             return true;
         } else if(event.event == DialogExResultCenter) {
             ble_beacon->is_beacon_active = !ble_beacon->is_beacon_active;
@@ -74,6 +74,6 @@ bool disney_beacons_app_scene_run_beacon_on_event(void* context, SceneManagerEve
 }
 
 void disney_beacons_app_scene_run_beacon_on_exit(void* context) {
-    BleBeaconApp* ble_beacon = context;
+    DisneyBeaconsApp* ble_beacon = context;
     UNUSED(ble_beacon);
 }

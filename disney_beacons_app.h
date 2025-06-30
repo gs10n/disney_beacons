@@ -32,6 +32,7 @@ typedef struct {
     Submenu* submenu;
     ByteInput* byte_input;
     DialogEx* dialog_ex;
+    Submenu* ears;
 
     FuriString* status_string;
 
@@ -39,16 +40,17 @@ typedef struct {
     uint8_t beacon_data[EXTRA_BEACON_MAX_DATA_SIZE];
     uint8_t beacon_data_len;
     bool is_beacon_active;
-} BleBeaconApp;
+} DisneyBeaconsApp;
 
 typedef enum {
-    BleBeaconAppViewSubmenu,
-    BleBeaconAppViewByteInput,
-    BleBeaconAppViewDialog,
-} BleBeaconAppView;
+    DisneyBeaconsAppViewSubmenu,
+    DisneyBeaconsAppViewByteInput,
+    DisneyBeaconsAppViewDialog,
+    DisneyBeaconsAppViewEars,
+} DisneyBeaconsAppView;
 
 typedef enum {
-    BleBeaconAppCustomEventDataEditResult = 100,
-} BleBeaconAppCustomEvent;
+    DisneyBeaconsAppCustomEventDataEditResult = 100,
+} DisneyBeaconsAppCustomEvent;
 
-void disney_beacons_app_update_state(BleBeaconApp* app);
+void disney_beacons_app_update_state(DisneyBeaconsApp* app);

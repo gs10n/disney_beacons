@@ -3,11 +3,11 @@
 #include <gui/scene_manager.h>
 
 // Generate scene id and total number
-#define ADD_SCENE(prefix, name, id) BleBeaconAppScene##id,
+#define ADD_SCENE(prefix, name, id) DisneyBeaconsAppScene##id,
 typedef enum {
 #include "scene_config.h"
-    BleBeaconAppSceneNum,
-} BleBeaconAppScene;
+    DisneyBeaconsAppSceneNum,
+} DisneyBeaconsAppScene;
 #undef ADD_SCENE
 
 extern const SceneManagerHandlers disney_beacons_app_scene_handlers;
