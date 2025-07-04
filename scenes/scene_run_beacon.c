@@ -36,7 +36,7 @@ static void update_status_text(DisneyBeaconsApp* ble_beacon) {
 
     dialog_ex_set_text(dialog_ex, furi_string_get_cstr(status), 0, 29, AlignLeft, AlignCenter);
 
-    dialog_ex_set_icon(dialog_ex, 93, 20, &I_lighthouse_35x44);
+    dialog_ex_set_icon(dialog_ex, 93, 20, &I_castle_35x44);
 
     dialog_ex_set_left_button_text(dialog_ex, "Config");
 
