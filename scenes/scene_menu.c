@@ -4,6 +4,7 @@ enum SubmenuIndex {
     SubmenuIndexSetMac,
     SubmenuIndexSetData,
     SubmenuIndexSetEars,
+    SubmenuIndexSetBand,
 };
 
 static void disney_beacons_app_scene_menu_submenu_callback(void* context, uint32_t index) {
@@ -33,6 +34,12 @@ void disney_beacons_app_scene_menu_on_enter(void* context) {
         SubmenuIndexSetEars,
         disney_beacons_app_scene_menu_submenu_callback,
         ble_beacon);
+    submenu_add_item(
+        submenu,
+        "Band",
+        SubmenuIndexSetBand,
+        disney_beacons_app_scene_menu_submenu_callback,
+        ble_beacon);
 
     view_dispatcher_switch_to_view(ble_beacon->view_dispatcher, DisneyBeaconsAppViewSubmenu);
 }
@@ -53,6 +60,9 @@ bool disney_beacons_app_scene_menu_on_event(void* context, SceneManagerEvent eve
             consumed = true;
         } else if(submenu_index == SubmenuIndexSetEars) {
             scene_manager_next_scene(scene_manager, DisneyBeaconsAppSceneInputEarsData);
+            consumed = true;
+        } else if(submenu_index == SubmenuIndexSetBand) {
+            scene_manager_next_scene(scene_manager, DisneyBeaconsAppSceneInputBandData);
             consumed = true;
         }
     }

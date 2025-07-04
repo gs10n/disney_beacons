@@ -92,6 +92,10 @@ static DisneyBeaconsApp* disney_beacons_app_alloc(void) {
     view_dispatcher_add_view(
         app->view_dispatcher, DisneyBeaconsAppViewEars, submenu_get_view(app->ears));
 
+    app->band = submenu_alloc();
+    view_dispatcher_add_view(
+        app->view_dispatcher, DisneyBeaconsAppViewBand, submenu_get_view(app->band));
+
     disney_beacons_app_restore_beacon_state(app);
 
     return app;
@@ -102,11 +106,13 @@ static void disney_beacons_app_free(DisneyBeaconsApp* app) {
     view_dispatcher_remove_view(app->view_dispatcher, DisneyBeaconsAppViewSubmenu);
     view_dispatcher_remove_view(app->view_dispatcher, DisneyBeaconsAppViewDialog);
     view_dispatcher_remove_view(app->view_dispatcher, DisneyBeaconsAppViewEars);
+    view_dispatcher_remove_view(app->view_dispatcher, DisneyBeaconsAppViewBand);
 
     free(app->byte_input);
     free(app->submenu);
     free(app->dialog_ex);
     free(app->ears);
+    free(app->band);
 
     free(app->scene_manager);
     free(app->view_dispatcher);
