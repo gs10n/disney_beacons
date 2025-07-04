@@ -33,6 +33,7 @@ typedef struct {
     ByteInput* byte_input;
     DialogEx* dialog_ex;
     Submenu* ears;
+    Submenu* band;
 
     FuriString* status_string;
 
@@ -47,6 +48,7 @@ typedef enum {
     DisneyBeaconsAppViewByteInput,
     DisneyBeaconsAppViewDialog,
     DisneyBeaconsAppViewEars,
+    DisneyBeaconsAppViewBand,
 } DisneyBeaconsAppView;
 
 typedef enum {
