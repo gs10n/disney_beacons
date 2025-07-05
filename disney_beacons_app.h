@@ -55,4 +55,4 @@ typedef enum {
     DisneyBeaconsAppCustomEventDataEditResult = 100,
 } DisneyBeaconsAppCustomEvent;
 
-void disney_beacons_app_update_state(DisneyBeaconsApp* app);
+void disney_beacons_app_update_state(DisneyBeaconsApp* app, uint8_t beacon_data_len);

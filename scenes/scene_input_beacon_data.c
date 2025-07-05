@@ -27,7 +27,11 @@ bool disney_beacons_app_scene_input_beacon_data_on_event(void* context, SceneMan
 
     if(event.type == SceneManagerEventTypeCustom) {
         if(event.event == DisneyBeaconsAppCustomEventDataEditResult) {
-            disney_beacons_app_update_state(ble_beacon);
+            uint8_t len = 0;
+            while((len < sizeof(ble_beacon->beacon_data)) && (ble_beacon->beacon_data[len] != 0)) {
+                len++;
+            }
+            disney_beacons_app_update_state(ble_beacon, len);
             scene_manager_previous_scene(scene_manager);
             return true;
         }

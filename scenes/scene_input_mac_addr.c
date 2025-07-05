@@ -27,7 +27,7 @@ bool disney_beacons_app_scene_input_mac_addr_on_event(void* context, SceneManage
 
     if(event.type == SceneManagerEventTypeCustom) {
         if(event.event == DisneyBeaconsAppCustomEventDataEditResult) {
-            disney_beacons_app_update_state(ble_beacon);
+            disney_beacons_app_update_state(ble_beacon, ble_beacon->beacon_data_len);
             scene_manager_previous_scene(scene_manager);
             return true;
         }
