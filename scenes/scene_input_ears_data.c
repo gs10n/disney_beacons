@@ -47,7 +47,7 @@ bool disney_beacons_app_scene_input_ears_data_on_event(void* context, SceneManag
         if(event.event < ears_menu_options_count) {
             const EarsMenuOption* option = &ears_menu_options[event.event];
             memcpy(ble_beacon->beacon_data, option->data, option->data_len);
-            disney_beacons_app_update_state(ble_beacon);
+            disney_beacons_app_update_state(ble_beacon, option->data_len);
             scene_manager_previous_scene(scene_manager);
             consumed = true;
         }

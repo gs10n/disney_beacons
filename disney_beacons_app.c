@@ -139,16 +139,12 @@ int32_t disney_beacons_app(void* args) {
     return 0;
 }
 
-void disney_beacons_app_update_state(DisneyBeaconsApp* app) {
+void disney_beacons_app_update_state(DisneyBeaconsApp* app, uint8_t beacon_data_len) {
     furi_hal_bt_extra_beacon_stop();
 
     furi_check(furi_hal_bt_extra_beacon_set_config(&app->beacon_config));
 
-    app->beacon_data_len = 0;
-    while((app->beacon_data[app->beacon_data_len] != 0) &&
-          (app->beacon_data_len < sizeof(app->beacon_data))) {
-        app->beacon_data_len++;
-    }
+    app->beacon_data_len = beacon_data_len;
 
     FURI_LOG_I(TAG, "beacon_data_len: %d", app->beacon_data_len);
 

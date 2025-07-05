@@ -65,7 +65,7 @@ bool disney_beacons_app_scene_run_beacon_on_event(void* context, SceneManagerEve
             return true;
         } else if(event.event == DialogExResultCenter) {
             ble_beacon->is_beacon_active = !ble_beacon->is_beacon_active;
-            disney_beacons_app_update_state(ble_beacon);
+            disney_beacons_app_update_state(ble_beacon, ble_beacon->beacon_data_len);
             update_status_text(ble_beacon);
             return true;
         }
