@@ -16,6 +16,11 @@ static const BandMenuOption band_menu_options[] = {
         .data = (const uint8_t[]){0x02, 0x01, 0x04, 0x0e, 0xff, 0x83, 0x01, 0xe9, 0x09, 0x00, 0x12, 0x0f, 0xbc, 0xb5, 0xb5, 0xa4, 0xa4, 0xb9},
         .data_len = 18,
     },
+    {
+        .name = "Navi",
+        .data = (const uint8_t[]){0x02, 0x01, 0x04, 0x12, 0xff, 0x83, 0x01, 0xe9, 0x0d, 0x00, 0x62, 0x0f, 0xa8, 0xa7, 0xb7, 0xb6, 0xa3, 0x59, 0x10, 0x04, 0x48, 0xae},
+        .data_len = 22,
+    },
 };
 
 static const size_t band_menu_options_count = sizeof(band_menu_options) / sizeof(BandMenuOption);
@@ -23,8 +28,6 @@ static const size_t band_menu_options_count = sizeof(band_menu_options) / sizeof
 
 bool disney_beacons_app_scene_input_band_data_on_event(void* context, SceneManagerEvent event) {
     DisneyBeaconsApp* ble_beacon = context;
-    SceneManager* scene_manager = ble_beacon->scene_manager;
-
     bool consumed = false;
 
     if(event.type == SceneManagerEventTypeCustom) {
@@ -32,7 +35,6 @@ bool disney_beacons_app_scene_input_band_data_on_event(void* context, SceneManag
             const BandMenuOption* option = &band_menu_options[event.event];
             memcpy(ble_beacon->beacon_data, option->data, option->data_len);
             disney_beacons_app_update_state(ble_beacon, option->data_len);
-            scene_manager_previous_scene(scene_manager);
             consumed = true;
         }
     }

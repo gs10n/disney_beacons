@@ -11,6 +11,7 @@ static void disney_beacons_app_scene_menu_ears_callback(void* context, uint32_t 
     view_dispatcher_send_custom_event(ble_beacon->view_dispatcher, index);
 }
 
+#define CMD_COUNT 9
 static const EarsMenuOption ears_menu_options[] = {
     {
         .name = "Green",
@@ -30,7 +31,7 @@ static const EarsMenuOption ears_menu_options[] = {
         .name = "Red-Blue",
         .data =
             (const uint8_t[]){0x02, 0x01, 0x04, 0x09, 0xff, 0x83, 0x01, 0x09,
-                              0x0c, 0x01, 0xff, 0x64, 0x6c},
+                              0x0c, 0x01, 0xff, 0x64, 0x69},
         .data_len = 13,
     },
 };
@@ -39,16 +40,15 @@ static const size_t ears_menu_options_count = sizeof(ears_menu_options) / sizeof
 
 bool disney_beacons_app_scene_input_ears_data_on_event(void* context, SceneManagerEvent event) {
     DisneyBeaconsApp* ble_beacon = context;
-    SceneManager* scene_manager = ble_beacon->scene_manager;
-
+    static uint8_t count = 0;
     bool consumed = false;
 
     if(event.type == SceneManagerEventTypeCustom) {
         if(event.event < ears_menu_options_count) {
             const EarsMenuOption* option = &ears_menu_options[event.event];
             memcpy(ble_beacon->beacon_data, option->data, option->data_len);
+            ble_beacon->beacon_data[CMD_COUNT] = ++count; 
             disney_beacons_app_update_state(ble_beacon, option->data_len);
-            scene_manager_previous_scene(scene_manager);
             consumed = true;
         }
     }
